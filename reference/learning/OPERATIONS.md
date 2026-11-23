@@ -1,6 +1,8 @@
 # Codex learning on this machine
 
-The existing Codex CLI 0.170.0 runs four user hooks from `~/.codex/hooks.json`. Only their four exact native trust hashes were registered in `~/.codex/config.toml`. The daemon accepted the configuration reload while the original session stayed open. The CLI executable and main model setting are unchanged. Native Codex memory was disabled and had zero extracted memories at installation. No old transcripts were imported.
+Learning accepts main-thread transcripts whose provider is `openai` or `router`, supporting [codex-router](../../docs/router.md). A transcript label only identifies the configured provider name. Use `router` with a provider configuration you trust. The isolated reviewer still uses its own direct OpenAI configuration. Transcript location, session identity, workspace scope, completion, and subagent checks remain in force.
+
+The original installation used Codex CLI 0.170.0 and four user hooks from `~/.codex/hooks.json`. Only their four exact native trust hashes were registered in `~/.codex/config.toml`. The daemon accepted the configuration reload while the original session stayed open. Native Codex memory was disabled and had zero extracted memories at installation. No old transcripts were imported. The November 23 routing update used Codex CLI 0.171.0. Both synthetic provider tests passed with the installed offline reviewer after earlier runs reported an offline reviewer error.
 
 ## What happens during a turn
 
@@ -11,7 +13,7 @@ The existing Codex CLI 0.170.0 runs four user hooks from `~/.codex/hooks.json`. 
 | PostToolUse | Record a compact result. Match shell outcomes to native command IDs. The hook can publish supported mechanically verified corrections during the same turn. |
 | Stop | Queue one job per main session and turn. A worker waits for the native completion record, projects this turn, reviews it, saves the decision and applies validated changes. Reviewer sessions disable hooks. The user systemd timer retries failures every two minutes when due and recovers missed Stop dispatch for already registered turns. |
 
-The native user skill [codex-learned-procedures](/root/.agents/skills/codex-learned-procedures/SKILL.md) is the discovery entry. Generated project skills live under `~/.local/state/codex-learning/skills/<project>/`. Prompt and tool hooks read current records directly, including changes made after the thread started. The reviewer can attach local additions under an existing skill topic. Automatic writers have no interface for creating executable files or changing hooks, tokens, permission settings, or budgets.
+The native user skill [codex-learned-procedures](../skills/codex-learned-procedures/SKILL.md) is the discovery entry. Generated project skills live under `~/.local/state/codex-learning/skills/<project>/`. Prompt and tool hooks read current records directly, including changes made after the thread started. The reviewer can attach local additions under an existing skill topic. Automatic writers have no interface for creating executable files or changing hooks, tokens, permission settings, or budgets.
 
 ## Review and cost
 

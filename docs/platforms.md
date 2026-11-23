@@ -30,6 +30,8 @@ The reference uses `fcntl`, Unix ownership and permissions, a machine identity, 
 
 Some WSL distributions already run systemd. If it is unavailable, consult [Microsoft's WSL configuration guide](https://learn.microsoft.com/en-us/windows/wsl/wsl-config) before changing `/etc/wsl.conf`; enabling it and restarting WSL affects the distribution. Verify the user service actually runs after restart. Keep the code and state in the Linux home and validate filesystem locking and permissions there.
 
+For optional [model routing](router.md), whole-home setup uses systemd user units on Linux and launchd on macOS. The wrapper is useful when a user service is unavailable. Treat WSL as a separate Linux home and verify routing there after the distribution stops and starts. Upstream v0.14.0 ships Linux and macOS binaries, and the reference routing smoke tests ran on Linux.
+
 ## macOS
 
 macOS supplies Unix APIs including `fcntl`, but that alone does not make this snapshot portable. Replace `/root`, `/usr/bin/python3`, GNU-specific command assumptions, Linux socket peer-credential checks in `refresh.py`, and `systemctl` use. Adapt the offline runtime separately for the machine architecture. A per-user `launchd` job can provide periodic retries, but its environment, user session lifecycle, and restart behavior must be tested. Use restrictive permissions for local state and secrets. Verify hook events and SQLite FTS5 on the actual Python interpreter.

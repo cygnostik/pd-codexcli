@@ -1,0 +1,68 @@
+{
+  "classifier": "jev",
+  "mode": "balanced",
+  "routes": {
+    "micro": {
+      "model": "gpt-6-luna",
+      "effort": "low"
+    },
+    "low": {
+      "model": "gpt-6.1-terra",
+      "effort": "medium"
+    },
+    "medium": {
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "high": {
+      "model": "gpt-6.2-astra",
+      "effort": "high"
+    }
+  },
+  "activities": {
+    "code": {
+      "medium": {
+        "effort": "high"
+      }
+    },
+    "debug": {
+      "medium": {
+        "effort": "high"
+      },
+      "high": {
+        "effort": "xhigh"
+      }
+    },
+    "review": {
+      "medium": {
+        "effort": "high"
+      },
+      "high": {
+        "effort": "xhigh"
+      }
+    },
+    "plan": {
+      "high": {
+        "effort": "xhigh"
+      }
+    },
+    "docs": {
+      "low": {
+        "model": "gpt-6.1-terra",
+        "effort": "medium"
+      }
+    }
+  },
+  "prices": {
+    "gpt-6.2-sol": {
+      "input": 2,
+      "cachedInput": 0.1,
+      "output": 10
+    },
+    "gpt-6.2-astra": {
+      "input": 8,
+      "cachedInput": 0.4,
+      "output": 40
+    }
+  }
+}

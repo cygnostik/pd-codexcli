@@ -140,8 +140,8 @@ def hook(h):
         with p.open('rb') as f:
             header=json.loads(f.readline()).get('payload',{})
         if header.get('thread_source')=='subagent' or isinstance(header.get('source'),dict): return {}
-        if header.get('model_provider') not in ('openai',None):
-            return {'systemMessage':'Local learning is scoped to the existing OpenAI provider.'}
+        if header.get('model_provider') not in ('openai','router',None):
+            return {'systemMessage':'Local learning is scoped to OpenAI and the configured Codex router provider.'}
     tool=h.get('tool_name','')
     args=h.get('tool_input',{})
     command=args.get('command','') if isinstance(args,dict) and tool=='Bash' else ''
@@ -308,8 +308,9 @@ def process(db,j):
         if not p or not p.is_file():
             raise ValueError('A persistent native transcript is required to verify provider and turn identity')
         with p.open('rb') as f: header=json.loads(f.readline())['payload']
-        if header.get('model_provider')!='openai' or header.get('id')!=j['session']:
-            raise ValueError('Cannot verify original OpenAI provider and thread identity')
+        if (header.get('model_provider') not in ('openai','router') or header.get('id')!=j['session']
+                or header.get('thread_source')=='subagent' or isinstance(header.get('source'),dict)):
+            raise ValueError('Cannot verify allowed provider and main thread identity')
         complete=terminal_state(db,j)
         for delay in (.05,.1,.2,.4,.8):
             if complete: break

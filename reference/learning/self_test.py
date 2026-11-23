@@ -22,7 +22,7 @@ def run(root):
     p=root/'.codex/sessions'/('rollout-'+sid+'.jsonl')
     p.parent.mkdir(parents=True)
     with p.open('w') as f:
-        print(json.dumps({'type':'session_meta','payload':{'id':sid,'model_provider':'openai','thread_source':'user'}}),file=f)
+        print(json.dumps({'type':'session_meta','payload':{'id':sid,'model_provider':os.environ.get('LEARNING_TEST_PROVIDER','openai'),'thread_source':'user'}}),file=f)
     def native(t,v):
         with p.open('a') as f: print(json.dumps({'type':t,'payload':v}),file=f)
     def event(turn, ev, **fields):
